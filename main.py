@@ -2,14 +2,24 @@ import websocket
 import base64
 import pyaudio
 import json
-from threading import Thread
+import json
+import time 
 
 
-YOUR_API_TOKEN = "YOUR_API_TOKEN" 
-FRAMES_PER_BUFFER = 3200
+# load API_TOKEN from statics.json
+statics = open('gitignore/statics.json')
+data = json.load(statics)
+YOUR_API_TOKEN = data["API_TOKEN"]
+
+
+
+# stream settings
+FRAMES_PER_BUFFER = 3200                        
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 SAMPLE_RATE = 16000
+
+# intialize stream
 p = pyaudio.PyAudio()
 
 stream = p.open(
