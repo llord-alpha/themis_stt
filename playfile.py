@@ -6,7 +6,7 @@ import pyaudio
 sys.argv.append("voice.wav")
 
 wav = wave.open(sys.argv[1], 'rb')
-print(wav.getnframes())
+
 
 
 
