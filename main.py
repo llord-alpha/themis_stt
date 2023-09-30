@@ -27,7 +27,7 @@ SELECT_AUDIOINPUT = False   # True = select audio input device, False = use defa
 ########## /SETTINGS ##########
 
 # load API_TOKEN from statics.json
-statics = open('gitignore/statics.json')
+statics = open('gitignore/properties.json')
 data = json.load(statics)
 YOUR_API_TOKEN = data["API_TOKEN"]
 statics.close()
