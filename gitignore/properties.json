@@ -1,6 +1,6 @@
 {
     "API_TOKEN" : "YOUR_API_TOKEN" ,
-    "SELECT_AUDIOINPUT" : -51 ,
+    "SELECT_AUDIOINPUT" : true ,
     "LOG_TO_CONSOLE" : true 
 
 
