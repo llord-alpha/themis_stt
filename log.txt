@@ -1,0 +1,7 @@
+--------------------------------------------------
+This is the Log of the Themis Voice to Text API
+Startup time: 2023-10-01 00h:06s:32s
+Message: Starting up
+--------------------------------------------------
+Time: 2023-10-01 00h:06s:32s
+Message: Input Device id 9 - CABLE Output (VB-Audio Virtual 

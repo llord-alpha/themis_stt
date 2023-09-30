@@ -2,56 +2,81 @@ import websocket
 import base64
 import pyaudio
 import json
-import json
 import time 
 
-########## SETTINGS ##########
-
-SELECT_AUDIOINPUT = False   # True = select audio input device, False = use default input device
 
 
 
+# logging
+
+def log(message, startup=None ):
+    global LOG_TO_CONSOLE
+
+    if startup:
+        with open('log.txt', 'w') as f:         # clear old log
+            f.write("--------------------------------------------------\n")
+            f.write("This is the Log of the Themis Voice to Text API\n")
+            f.write("Startup time: " + time.strftime("%Y-%m-%d %Hh:%Ms:%Ss", time.localtime()) + "\n")
+            f.write("Message: " + message + "\n")
+            
+    else:
+        with open('log.txt', 'a') as f:         # append to log
+            f.write("--------------------------------------------------\n")
+            f.write("Time: " + time.strftime("%Y-%m-%d %Hh:%Ms:%Ss", time.localtime()) + "\n")
+            f.write("Message: " + str(message) + "\n")
+            
+            if LOG_TO_CONSOLE:
+                print("--------------------------------------------------")
+                print("Time: " + time.strftime("%Y-%m-%d %Hh:%Ms:%Ss", time.localtime()))
+                print("Message: " + message)
+                
 
 
-
-
-
-
-
-
-
-
-
-
-
-########## /SETTINGS ##########
-
-# load API_TOKEN from statics.json
-statics = open('gitignore/properties.json')
-data = json.load(statics)
-YOUR_API_TOKEN = data["API_TOKEN"]
-statics.close()
-
+# user selects audio input device
 
 def select_audioinput():
     """
     returns the index of the audio input device
     """
+    device_id = -1
+    logmsg_long = ""
+
     p = pyaudio.PyAudio()
     info = p.get_host_api_info_by_index(0)
     numdevices = info.get('deviceCount')
-    
-    for i in range(0, numdevices):
+    while device_id > numdevices or device_id < 0:
+        
+        logmsg_long = logmsg_long +"Available input devices: \n"
+        for i in range(0, numdevices):
             if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
-                print("Input Device id ", i, " - ", p.get_device_info_by_host_api_device_index(0, i).get('name'))
-    
-    device_id = int(input("Select input device id: "))
+                logmsg = "Input Device id " + str(i) + " - " + str(p.get_device_info_by_host_api_device_index(0, i).get('name'))
+                logmsg_long = logmsg_long + logmsg + "\n"
+
+        log(logmsg)
+        device_id = int(input("Select input device id: "))
+        if device_id > numdevices or device_id < 0:
+           
+            logmsg = "Device id out of range, please try again. device_id: " + str(device_id)
+            log(logmsg)
+
     return device_id
 
-if SELECT_AUDIOINPUT:
-    input_device = select_audioinput()
-else:
-    input_device = None
+
+# startup
+log("Starting up", startup=True)
+
+
+# load from properties.json
+properties = open('gitignore/properties.json')
+data = json.load(properties)
+
+YOUR_API_TOKEN = data["API_TOKEN"]
+USER_SELECT_AUDIOINPUT = data["SELECT_AUDIOINPUT"]   # True = select audio input device, False = use default input device
+LOG_TO_CONSOLE = data["LOG_TO_CONSOLE"]     # True = log errors to console, False = do not log errors to console
+
+
+properties.close()
+
 
 
 # stream settings
@@ -62,6 +87,36 @@ SAMPLE_RATE = 16000
 
 # intialize stream
 p = pyaudio.PyAudio()
+
+
+
+
+
+
+
+# select mode for audio input selection
+if USER_SELECT_AUDIOINPUT == True:
+    input_device = select_audioinput()
+elif not USER_SELECT_AUDIOINPUT:
+    input_device = None
+else:
+    try:
+        info = p.get_host_api_info_by_index(0)
+        numdevices = info.get('deviceCount')
+        print("numdevices: ", numdevices)
+        if int(USER_SELECT_AUDIOINPUT) <= numdevices:
+            input_device = int(USER_SELECT_AUDIOINPUT)
+        elif int(USER_SELECT_AUDIOINPUT) > numdevices:
+#            print("Device id out of range, using system default input device instead")
+            log("Device id out of range, using system default input device instead")
+            input_device = None
+    except:
+#        print("Cannot find input device, using system default input device instead")
+        log("User defined input device not found, using system default input device instead")
+        input_device = None
+
+
+
 
 stream = p.open(
     format = FORMAT,

@@ -4,19 +4,5 @@
 
 
 
-def larsstinkt():
-    print("Lars stinkt")
-
-
-import json
- 
-# Opening JSON file
-
-
-
-statics = open('gitignore/statics.json')
-data = json.load(statics)
-YOUR_API_TOKE = data["API_TOKEN"]
- 
-# Closing file
-f.close()
+a = "Hallo \n" + str(565656) + "\n" + "Hallo"
+print(a)
