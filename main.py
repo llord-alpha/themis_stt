@@ -5,7 +5,7 @@ import json
 from threading import Thread
 
 
-YOUR_API_TOKEN = "f7c7bb1fa5194b93a9caadc4fe174370" 
+YOUR_API_TOKEN = "YOUR_API_TOKEN" 
 FRAMES_PER_BUFFER = 3200
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
