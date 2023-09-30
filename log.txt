@@ -1,7 +1,29 @@
 --------------------------------------------------
 This is the Log of the Themis Voice to Text API
-Startup time: 2023-10-01 00h:06s:32s
+Startup time: 2023-10-01 00h:19s:43s
 Message: Starting up
 --------------------------------------------------
-Time: 2023-10-01 00h:06s:32s
-Message: Input Device id 9 - CABLE Output (VB-Audio Virtual 
+Time: 2023-10-01 00h:19s:43s
+Message: Available input devices: 
+Input Device id 0 - Microsoft Sound Mapper - Input
+Input Device id 1 - VoiceMeeter VAIO3 Output (VB-Au
+Input Device id 2 - VoiceMeeter Aux Output (VB-Audi
+Input Device id 3 - Mikrofon (2- USB Audio CODEC )
+Input Device id 4 - Mikrofon (NVIDIA RTX Voice)
+Input Device id 5 - Microphone (Logi C270 HD WebCam
+Input Device id 6 - Mikrofon (UMC1820)
+Input Device id 7 - VoiceMeeter Output (VB-Audio Vo
+Input Device id 8 - Mikrofon (4- Logitech G935/G933
+Input Device id 9 - CABLE Output (VB-Audio Virtual 
+Input Device id 9 - CABLE Output (VB-Audio Virtual 
+Input Device id 9 - CABLE Output (VB-Audio Virtual 
+Input Device id 9 - CABLE Output (VB-Audio Virtual 
+Input Device id 9 - CABLE Output (VB-Audio Virtual 
+Input Device id 9 - CABLE Output (VB-Audio Virtual 
+Input Device id 9 - CABLE Output (VB-Audio Virtual 
+Input Device id 9 - CABLE Output (VB-Audio Virtual 
+Input Device id 9 - CABLE Output (VB-Audio Virtual 
+Input Device id 9 - CABLE Output (VB-Audio Virtual 
+Input Device id 9 - CABLE Output (VB-Audio Virtual 
+Input Device id 9 - CABLE Output (VB-Audio Virtual 
+

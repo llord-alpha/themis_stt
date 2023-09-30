@@ -28,7 +28,7 @@ def log(message, startup=None ):
             if LOG_TO_CONSOLE:
                 print("--------------------------------------------------")
                 print("Time: " + time.strftime("%Y-%m-%d %Hh:%Ms:%Ss", time.localtime()))
-                print("Message: " + message)
+                print("Message: \n" + message)
                 
 
 
@@ -44,15 +44,17 @@ def select_audioinput():
     p = pyaudio.PyAudio()
     info = p.get_host_api_info_by_index(0)
     numdevices = info.get('deviceCount')
+    print("numdevices: ", numdevices)
     while device_id > numdevices or device_id < 0:
         
         logmsg_long = logmsg_long +"Available input devices: \n"
         for i in range(0, numdevices):
+            print("i: ", i)
             if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
                 logmsg = "Input Device id " + str(i) + " - " + str(p.get_device_info_by_host_api_device_index(0, i).get('name'))
-                logmsg_long = logmsg_long + logmsg + "\n"
+            logmsg_long = logmsg_long + logmsg + "\n"
 
-        log(logmsg)
+        log(logmsg_long)
         device_id = int(input("Select input device id: "))
         if device_id > numdevices or device_id < 0:
            
