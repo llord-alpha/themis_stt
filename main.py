@@ -26,7 +26,6 @@ def log(message, startup=None ):
             f.write("This is the Log of the Themis Voice to Text API\n")
             f.write("Startup time: " + time.strftime("%Y-%m-%d %Hh:%Ms:%Ss", time.localtime()) + "\n")
             f.write("Message: " + message + "\n")
-            
     else:
         with open('log.txt', 'a') as f:         # append to log
             f.write("--------------------------------------------------\n")

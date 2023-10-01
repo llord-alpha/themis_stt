@@ -43,6 +43,15 @@ class JsonParser:
 
 
 
+
+
+
+
+
+
+
+
+
 a = JsonParser("gitignore/AAAproperties.json")
 print(a.get_json("API_TOKEN"))
 a.write_json("Test", 99999)
