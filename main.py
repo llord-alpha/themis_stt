@@ -2,8 +2,16 @@ import websocket
 import base64
 import pyaudio
 import json
+import os.path
 import time 
 
+#
+#       properties.json destination
+#
+properties_destination = "gitignore/properties.json"
+#
+#
+#
 
 
 
@@ -31,6 +39,46 @@ def log(message, startup=None ):
                 print("Message: \n" + message)
                 
 
+class JsonParser:
+    def __init__(self, destination = None):
+
+        # set defult destination for json file
+        defult_destination = "gitignore/properties.json" 
+
+
+        if destination == None:                     # if no destination is specified, use standart destination
+            log(str("No destination specified. Use standart destination: " + defult_destination))
+            destination = defult_destination
+        self.destination = destination
+        try:
+            log("Loading JSON File:")
+            with open(self.destination, "r") as f:      # load json contentsn
+                self.data = json.load(f)
+        except:
+            with open(self.destination, "w") as f:    # create new json file if file is empty   
+                log(str("JSON File -->" + destination + "<-- empty. Creating new file."))
+                self.data = {}
+                json.dump(self.data, f, indent=4)
+    def checkexistance(self, key = None):
+        if key == None:                                 # check if file exists
+            return os.path.isfile(self.destination)
+        else:
+            try:                                        # check if entry exists
+                self.data[key]
+                return True
+            except:
+                return False
+    def get_json(self, key):
+        try:                                    # try to get value from json file
+            with open(self.destination, "r") as f:
+                self.data = json.load(f)
+            return self.data[key]
+        except:
+            return None
+    def write_json(self, key, value):           # write value to json file
+        self.data[key] = value
+        with open(self.destination, 'w') as f:
+            json.dump(self.data, f, indent=4)
 
 # user selects audio input device
 
@@ -70,17 +118,15 @@ def usr_select_audioinput():
 
 # startup
 log("Starting up", startup=True)
-
+LOG_TO_CONSOLE = True
 
 # load from properties.json
-properties = open('gitignore/properties.json')
-data = json.load(properties)
+jsn_parser = JsonParser(properties_destination)
 
-YOUR_API_TOKEN = data["API_TOKEN"]
-USER_SELECT_AUDIOINPUT = data["SELECT_AUDIOINPUT"]   # True = select audio input device, False = use default input device
-LOG_TO_CONSOLE = data["LOG_TO_CONSOLE"]     # True = log errors to console, False = do not log errors to console
+YOUR_API_TOKEN = jsn_parser.get_json("API_TOKEN")   # API Token from AssemblyAI
+USER_SELECT_AUDIOINPUT = jsn_parser.get_json("SELECT_AUDIOINPUT")   # True = select audio input device, False = use default input device
+LOG_TO_CONSOLE = jsn_parser.get_json("LOG_TO_CONSOLE")     # True = log errors to console, False = do not log errors to console
 
-properties.close()
 
 
 
@@ -116,7 +162,6 @@ else:
                 log("Device is not suitable or device not found, using system default input device instead")
             input_device = None
     except:
-#        print("Cannot find input device, using system default input device instead")
         log("CRITICAL: User defined input device not found, using system default input device instead")
         input_device = None
 

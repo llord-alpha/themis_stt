@@ -1,7 +1,7 @@
 --------------------------------------------------
 This is the Log of the Themis Voice to Text API
-Startup time: 2023-10-01 01h:29s:09s
+Startup time: 2023-10-01 14h:02s:46s
 Message: Starting up
 --------------------------------------------------
-Time: 2023-10-01 01h:29s:10s
-Message: CRITICAL: User defined input device not found, using system default input device instead
+Time: 2023-10-01 14h:02s:46s
+Message: Loading JSON File:
