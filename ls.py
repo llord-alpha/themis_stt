@@ -4,6 +4,9 @@ import time
 import os.path
 # testsite
 
+# test2
+
+
 class JsonParser:
     def __init__(self, destination = None): 
         if destination == None:                     # if no destination is specified, use standart destination
