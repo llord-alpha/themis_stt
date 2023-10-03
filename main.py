@@ -2,8 +2,13 @@ import websocket
 import base64
 import pyaudio
 import json
+import os
 import os.path
 import time 
+import vosk
+import speech_recognition
+
+
 
 #
 #       properties.json destination
@@ -12,6 +17,8 @@ properties_destination = "gitignore/properties.json"
 #
 #
 #
+
+openai_api_key = os.getenv("openai_api_key")
 
 
 
@@ -23,7 +30,7 @@ def log(message, startup=None ):
     if startup:
         with open('log.txt', 'w') as f:         # clear old log
             f.write("--------------------------------------------------\n")
-            f.write("This is the Log of the Themis Voice to Text API\n")
+            f.write("This is the Log of the Themis Voice to Text Module\n")
             f.write("Startup time: " + time.strftime("%Y-%m-%d %Hh:%Ms:%Ss", time.localtime()) + "\n")
             f.write("Message: " + message + "\n")
     else:
@@ -166,7 +173,7 @@ else:
 
 
 
-
+log("Opening stream")
 stream = p.open(
     format = FORMAT,
     channels = CHANNELS,
@@ -176,49 +183,12 @@ stream = p.open(
     input_device_index = input_device   
 )
 
-def on_message(ws, message):
-    """
-    is being called on every message
-    """
-    pass
 
 
-def on_open(ws):
-    """
-    is being called on session start
-    """
-    pass
 
 
-def on_error(ws, error):
-    """
-    is being called in case of errors
-    """
-    pass
 
 
-def on_close(ws):
-    """
-    is being called on session end
-    """
-    pass
 
-
-# Set up the WebSocket connection with your desired callback functions
-websocket.enableTrace(False)
-
-# After opening the WebSocket connection, send an authentication header with your API key
-auth_header = {"Authorization": YOUR_API_TOKEN }
-
-ws = websocket.WebSocketApp(
-    f"wss://api.assemblyai.com/v2/realtime/ws?sample_rate={SAMPLE_RATE}",
-    header=auth_header,
-    on_message=on_message,
-    on_open=on_open,
-    on_error=on_error,
-    on_close=on_close
-)
-
-
-# Start the WebSocket connection
-ws.run_forever()
+log("Closing stream")
+p.close(stream)

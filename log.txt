@@ -1,12 +1,12 @@
 --------------------------------------------------
-This is the Log of the Themis Voice to Text API
-Startup time: 2023-10-01 15h:01s:45s
+This is the Log of the Themis Voice to Text Module
+Startup time: 2023-10-03 16h:53s:22s
 Message: Starting up
 --------------------------------------------------
-Time: 2023-10-01 15h:01s:45s
+Time: 2023-10-03 16h:53s:22s
 Message: Loading JSON File:
 --------------------------------------------------
-Time: 2023-10-01 15h:01s:45s
+Time: 2023-10-03 16h:53s:22s
 Message: Available input devices: 
 Input Device id 0 - Microsoft Sound Mapper - Input
 Input Device id 1 - VoiceMeeter VAIO3 Output (VB-Au
@@ -19,3 +19,9 @@ Input Device id 7 - VoiceMeeter Output (VB-Audio Vo
 Input Device id 8 - Mikrofon (4- Logitech G935/G933
 Input Device id 9 - CABLE Output (VB-Audio Virtual 
 
+--------------------------------------------------
+Time: 2023-10-03 16h:53s:27s
+Message: Opening stream
+--------------------------------------------------
+Time: 2023-10-03 16h:53s:27s
+Message: Closing stream
