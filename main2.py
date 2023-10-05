@@ -3,7 +3,6 @@ import json
 import os
 import os.path
 import time 
-import vosk
 import speech_recognition
 
 
@@ -16,7 +15,8 @@ properties_destination = "gitignore/properties.json"
 #
 #
 
-#openai_api_key = os.getenv("openai_api_key")
+API_TOKEN_OAI = os.getenv("OAI_api_key")
+print(API_TOKEN_OAI)
 
 
 
@@ -143,10 +143,21 @@ LOG_TO_CONSOLE = jsn_parser.get_json("LOG_TO_CONSOLE")     # True = log errors t
 
 # select mode for audio input selection
 log("Selecting audio input device ......")
+MICROPHONE_index = None
 if USER_SELECT_AUDIOINPUT == True and type(USER_SELECT_AUDIOINPUT) == bool:
+    log("User selects input device")
     MICROPHONE_index = usr_select_audioinput()
 elif not USER_SELECT_AUDIOINPUT:
+    log("Using system default input device")
     MICROPHONE_index = None
+elif type(USER_SELECT_AUDIOINPUT) == str:
+    try:
+        if USER_SELECT_AUDIOINPUT in speech_recognition.Microphone.list_microphone_names():
+            MICROPHONE_index = speech_recognition.Microphone.list_microphone_names().index(USER_SELECT_AUDIOINPUT)
+            log("Device found" + "\n" + "Device id: " + str(MICROPHONE_index) + "\n" + "Device name: " + speech_recognition.Microphone.list_microphone_names()[MICROPHONE_index])
+    except:
+        log("CRITICAL: User defined input device not found, using system default input device instead")
+        MICROPHONE_index = None
 else:
     try:
         speech_recognition.Microphone(device_index = USER_SELECT_AUDIOINPUT)
@@ -159,30 +170,7 @@ else:
 
 rec = speech_recognition.Recognizer()
 with speech_recognition.Microphone(device_index = MICROPHONE_index) as source:
-    print("Say something!")
+    log("Say something!")
     audio = rec.listen(source)
 
-print(rec.recognize_sphinx(audio))
-
-
-
-
-#log("Opening stream")
-#stream = p.open(
-#    format = FORMAT,
-#    channels = CHANNELS,
-#    rate = 48000,         #SAMPLE_RATE, uhsprunglich 'RATE'
-#    input = True,
-#    frames_per_buffer = FRAMES_PER_BUFFER,
-#    input_device_index = input_device   
-#)
-
-
-
-
-
-
-
-
-#log("Closing stream")
-#p.close(stream)
+log(rec.recognize_whisper_api(audio, api_key = API_TOKEN_OAI))

@@ -1,10 +1,16 @@
 --------------------------------------------------
 This is the Log of the Themis Voice to Text Module
-Startup time: 2023-10-05 23h:02s:56s
+Startup time: 2023-10-05 23h:18s:27s
 Message: Starting up
 --------------------------------------------------
-Time: 2023-10-05 23h:02s:56s
+Time: 2023-10-05 23h:18s:27s
 Message: Loading JSON File:
 --------------------------------------------------
-Time: 2023-10-05 23h:02s:56s
+Time: 2023-10-05 23h:18s:27s
 Message: Selecting audio input device ......
+--------------------------------------------------
+Time: 2023-10-05 23h:18s:27s
+Message: Using system default input device
+--------------------------------------------------
+Time: 2023-10-05 23h:18s:27s
+Message: Say something!
