@@ -1,6 +1,6 @@
 {
     "API_TOKEN_AAI" : "YOUR_API_TOKEN" ,
-    "SELECT_AUDIOINPUT" : false ,
+    "SELECT_AUDIOINPUT" : true ,
     "LOG_TO_CONSOLE" : true 
 
 

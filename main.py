@@ -30,6 +30,10 @@ def log(message, startup=None ):
             f.write("--------------------------------------------------\n")
             f.write("This is the Log of the Themis Voice to Text Module\n")
             f.write("Startup time: " + time.strftime("%Y-%m-%d %Hh:%Ms:%Ss", time.localtime()) + "\n")
+            with open("themis.txt", "r") as themisf:
+                contents = themisf.readlines()
+                for i in contents:
+                    f.write(i)
             f.write("Message: " + message + "\n")
     else:
         with open('log.txt', 'a') as f:         # append to log
@@ -98,7 +102,7 @@ def usr_select_audioinput():
         time.sleep(0.5)
         for index, name in enumerate(speech_recognition.Microphone.list_microphone_names()):
             if index in working_mics:
-                msg = "Microphone with name \"{1}\"  ----> `Microphone (device_index={0})`".format(index, name) + "\n"
+                msg = "Microphone with name \"{1}\"  ----> `device_id={0}`".format(index, name) + "\n"
                 logmsg_long = logmsg_long + msg
         log(logmsg_long)
 
