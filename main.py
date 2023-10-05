@@ -1,11 +1,8 @@
-import websocket
-import base64
-import pyaudio
+
 import json
 import os
 import os.path
 import time 
-import vosk
 import speech_recognition
 
 
@@ -18,7 +15,8 @@ properties_destination = "gitignore/properties.json"
 #
 #
 
-openai_api_key = os.getenv("openai_api_key")
+#API_TOKEN_OAI = os.getenv("OAI_api_key")
+#print(API_TOKEN_OAI)
 
 
 
@@ -91,32 +89,38 @@ class JsonParser:
 def usr_select_audioinput():
     device_id = -1                                      # initialize device_id with -1 to enter while loop
     logmsg_long = ""                                    # initialize logmsg_long with empty string for cleaner text Output
-
-    p = pyaudio.PyAudio()
-    info = p.get_host_api_info_by_index(0)
-    numdevices = info.get('deviceCount')                # number of devices (sometimes more than PyAudio can access)
-
-    while device_id > numdevices or device_id < 0 :
-
+    working_mics = ""
+    usr_selected_id = ""
+    while True :
+        logmsg_long = ""  
         logmsg_long = logmsg_long +"Available input devices: \n"
-        for i in range(0, numdevices):
-         
-            if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:      # check if device is suitable           no inputs --> no suitable device
-                logmsg = "Input Device id " + str(i) + " - " + str(p.get_device_info_by_host_api_device_index(0, i).get('name'))    # get device name / build logline
-                logmsg_long = logmsg_long + logmsg + "\n"
+        working_mics = speech_recognition.Microphone.list_working_microphones()
+        time.sleep(0.5)
+        for index, name in enumerate(speech_recognition.Microphone.list_microphone_names()):
+            if index in working_mics:
+                msg = "Microphone with name \"{1}\"  ----> `Microphone (device_index={0})`".format(index, name) + "\n"
+                logmsg_long = logmsg_long + msg
         log(logmsg_long)
 
-        device_id = int(input("Select input device id: "))
 
-        if device_id > numdevices or device_id < 0:                                              # check if device_id is in range
-            logmsg = "Device id out of range, please try again. device_id: " + str(device_id)
-            log(logmsg)
-            
-        elif not(p.get_device_info_by_host_api_device_index(0, device_id).get('maxInputChannels')) > 0:         # check if device is suitable
-            logmsg = "Device not suitable, please try again. device_id: " + str(device_id)
-            log(logmsg)
-            device_id = -1
+        usr_selected_id = input("Select input device id: ")
 
+        try:
+            device_id = int(usr_selected_id)
+        except:
+            log("Please enter a valid device id")
+            continue
+        time.sleep(0.5)
+        try:
+            if device_id in working_mics:
+                speech_recognition.Microphone(device_index = device_id)
+                log("Device found" + "\n" + "Device id: " + str(device_id) + "\n" + "Device name: " + speech_recognition.Microphone.list_microphone_names()[device_id])
+                break
+        except:
+            pass
+
+        print("Device not found, please try again. ")
+        device_id = -1                                  # resets device_id to -1 to enter while loop again
         logmsg_long = ""                            # clears logline for next loop
 
     return device_id
@@ -129,66 +133,44 @@ LOG_TO_CONSOLE = True
 # load from properties.json
 jsn_parser = JsonParser(properties_destination)
 
-YOUR_API_TOKEN = jsn_parser.get_json("API_TOKEN")   # API Token from AssemblyAI
+API_TOKEN_AAI = jsn_parser.get_json("API_TOKEN_AAI")   # API Token from AssemblyAI
 USER_SELECT_AUDIOINPUT = jsn_parser.get_json("SELECT_AUDIOINPUT")   # True = select audio input device, False = use default input device
 LOG_TO_CONSOLE = jsn_parser.get_json("LOG_TO_CONSOLE")     # True = log errors to console, False = do not log errors to console
 
 
 
 
-# stream settings
-FRAMES_PER_BUFFER = 3200                        
-FORMAT = pyaudio.paInt16
-CHANNELS = 1
-SAMPLE_RATE = 16000
-
-# intialize stream
-p = pyaudio.PyAudio()
-
-
-
 
 # select mode for audio input selection
+log("Selecting audio input device ......")
+MICROPHONE_index = None
 if USER_SELECT_AUDIOINPUT == True and type(USER_SELECT_AUDIOINPUT) == bool:
-    input_device = usr_select_audioinput()
+    log("User selects input device")
+    MICROPHONE_index = usr_select_audioinput()
 elif not USER_SELECT_AUDIOINPUT:
-    input_device = None
-else:
-    try:                                        # check if device exists
-        info = p.get_host_api_info_by_index(0)
-        numdevices = info.get('deviceCount')
-        if int(USER_SELECT_AUDIOINPUT) <= numdevices and (p.get_device_info_by_host_api_device_index(0, USER_SELECT_AUDIOINPUT).get('maxInputChannels')) > 0 and int(USER_SELECT_AUDIOINPUT) > 0:       # check if device is suitable for audio
-            input_device = int(USER_SELECT_AUDIOINPUT)
-        else:
-            if p.get_device_info_by_host_api_device_index(0, USER_SELECT_AUDIOINPUT).get('maxInputChannels') < 1 :          # evaluate error message
-                log("Device is not suitable, using system default input device instead")
-            elif int(USER_SELECT_AUDIOINPUT) > numdevices:
-                log("Device not found, using system default input device instead")
-            else:
-                log("Device is not suitable or device not found, using system default input device instead")
-            input_device = None
+    log("Using system default input device")
+    MICROPHONE_index = None
+elif type(USER_SELECT_AUDIOINPUT) == str:
+    try:
+        if USER_SELECT_AUDIOINPUT in speech_recognition.Microphone.list_microphone_names():
+            MICROPHONE_index = speech_recognition.Microphone.list_microphone_names().index(USER_SELECT_AUDIOINPUT)
+            log("Device found" + "\n" + "Device id: " + str(MICROPHONE_index) + "\n" + "Device name: " + speech_recognition.Microphone.list_microphone_names()[MICROPHONE_index])
     except:
         log("CRITICAL: User defined input device not found, using system default input device instead")
-        input_device = None
+        MICROPHONE_index = None
+else:
+    try:
+        speech_recognition.Microphone(device_index = USER_SELECT_AUDIOINPUT)
+        log("Device found" + "\n" + "Device id: " + str(USER_SELECT_AUDIOINPUT) + "\n" + "Device name: " + speech_recognition.Microphone.list_microphone_names()[USER_SELECT_AUDIOINPUT])       
+    except:
+        log("CRITICAL: User defined input device not found, using system default input device instead")
+        MICROPHONE_index = None
 
 
 
-log("Opening stream")
-stream = p.open(
-    format = FORMAT,
-    channels = CHANNELS,
-    rate = 48000,         #SAMPLE_RATE, uhsprunglich 'RATE'
-    input = True,
-    frames_per_buffer = FRAMES_PER_BUFFER,
-    input_device_index = input_device   
-)
+rec = speech_recognition.Recognizer()
+with speech_recognition.Microphone(device_index = MICROPHONE_index) as source:
+    log("Say something!")
+    audio = rec.listen(source)
 
-
-
-
-
-
-
-
-log("Closing stream")
-p.close(stream)
+log(rec.recognize_whisper_api(audio, api_key = API_TOKEN_OAI))
