@@ -1,6 +1,6 @@
 --------------------------------------------------
 This is the Log of the Themis Voice to Text Module
-Startup time: 2023-10-06 00h:16s:40s
+Startup time: 2023-10-08 23h:30s:57s
 
 
 
@@ -97,30 +97,25 @@ Startup time: 2023-10-06 00h:16s:40s
    
 Message: Starting up
 --------------------------------------------------
-Time: 2023-10-06 00h:16s:40s
+Time: 2023-10-08 23h:30s:57s
 Message: Loading JSON File:
 --------------------------------------------------
-Time: 2023-10-06 00h:16s:40s
+Time: 2023-10-08 23h:30s:57s
 Message: Selecting audio input device ......
 --------------------------------------------------
-Time: 2023-10-06 00h:16s:40s
+Time: 2023-10-08 23h:30s:57s
 Message: User selects input device
 --------------------------------------------------
-Time: 2023-10-06 00h:16s:42s
+Time: 2023-10-08 23h:31s:00s
 Message: Available input devices: 
-Microphone with name "Mikrofon (2- USB Audio CODEC )"  ----> `device_id=3`
+Microphone with name "Microsoft Sound Mapper - Input"  ----> `device_id=0`
+Microphone with name "VoiceMeeter Aux Output (VB-Audi"  ----> `device_id=2`
 Microphone with name "Microphone (Logi C270 HD WebCam"  ----> `device_id=5`
 Microphone with name "CABLE Output (VB-Audio Virtual "  ----> `device_id=9`
 Microphone with name "Primärer Soundaufnahmetreiber"  ----> `device_id=21`
 Microphone with name "VoiceMeeter VAIO3 Output (VB-Audio VoiceMeeter VAIO3)"  ----> `device_id=22`
-Microphone with name "VoiceMeeter Aux Output (VB-Audio VoiceMeeter AUX VAIO)"  ----> `device_id=23`
-Microphone with name "Mikrofon (2- USB Audio CODEC )"  ----> `device_id=24`
 Microphone with name "Mikrofon (NVIDIA RTX Voice)"  ----> `device_id=25`
-Microphone with name "Microphone (Logi C270 HD WebCam)"  ----> `device_id=26`
-Microphone with name "VoiceMeeter Output (VB-Audio VoiceMeeter VAIO)"  ----> `device_id=28`
-Microphone with name "Mikrofon (4- Logitech G935/G933s Gaming Headset)"  ----> `device_id=29`
 Microphone with name "CABLE Output (VB-Audio Virtual Cable)"  ----> `device_id=30`
-Microphone with name "Mikrofon (2- USB Audio CODEC )"  ----> `device_id=54`
 Microphone with name "Microphone (Logi C270 HD WebCam)"  ----> `device_id=56`
 Microphone with name "CABLE Output (VB-Audio Virtual Cable)"  ----> `device_id=60`
 
